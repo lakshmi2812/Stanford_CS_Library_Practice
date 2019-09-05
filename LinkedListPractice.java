@@ -1,3 +1,8 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Iterator;
+import java.util.Set;
+
 public class LinkedListPractice{
     Node head;
 
@@ -222,13 +227,64 @@ public class LinkedListPractice{
 
     //9.frontBackSplit() -> split a linkedlist into two lists
     //if list's length is odd, the extra element should go to the first list
-    public void frontBackSplit(){
+    public LinkedListPractice frontBackSplit(){
+        LinkedListPractice ll2 = new LinkedListPractice();
         int length = this.length();
         if(length < 2){
-            return;
+            return null;
         }
         //if length is even
-        
+        if(length % 2 == 0){
+            Node current = this.head;
+            int forMax = length/2 - 1;
+            for(int i = 0; i < forMax; i++){
+                current = current.next;
+            }
+            ll2.head = current.next;
+            current.next = null;
+        }
+
+        //if length is odd
+        if(length % 2 == 1){
+            Node _current = this.head;
+            int _forMax = (length+1)/2 - 1;
+            for(int j=0; j<_forMax; j++){
+                _current = _current.next;
+            }
+            ll2.head = _current.next;
+            _current.next = null;
+        }
+        return ll2;
+    }
+
+    //10.removeDuplicates() -> removes duplicate nodes from the linkedlist
+    public void removeDuplicates(){
+        HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>();
+        Node current = this.head;
+        hm.put(this.head.data, 1);
+        while(current.next != null){
+            if(hm.containsKey(current.next.data)){
+                //remmove the node
+                if(current.next.next != null){
+                    current.next = current.next.next;
+                }else{
+                    current.next = null;
+                }
+            }else{
+                //add the node to the hashMap
+                hm.put(current.next.data, 1);
+                current = current.next;
+            }
+        }
+    }
+
+    //11.moveNode() -> takes a second linkedlist and remves its head and pushes this head to the front(head) of the first linkedlist
+    public void moveNode(LinkedListPractice ll2){
+        Node newHead = ll2.head;
+        this.push(newHead.data);
+        ll2.head = ll2.head.next;
+        System.out.println("The second list after moveNode operation: ");
+        ll2.printList();
     }
 
 
@@ -238,7 +294,7 @@ public class LinkedListPractice{
         ll2.buildOneTwoThree();
         System.out.println("********");
         // ll2.printList();
-        int[] arr = {34,1,12,15,90};
+        int[] arr = {34,1,12,15, 90};
         for(int i = 0; i < arr.length; i++){
             ll.insertNth(i,arr[i]);
         }
@@ -246,7 +302,14 @@ public class LinkedListPractice{
         //ll.push(34);
         //ll.push(3);
         //ll.insertNth(0, 79);
-        //ll.printList();
+        ll.printList();
+        System.out.println("The linked list after splitting: ");
+        LinkedListPractice llHalf;
+        llHalf = ll.frontBackSplit();
+        System.out.println("First Half:->");
+        ll.printList();
+        System.out.println("Second Half:->");
+        llHalf.printList();
         ll.insertSort();
         ll.append(ll2.head);
         ll.printList();
@@ -254,7 +317,24 @@ public class LinkedListPractice{
         System.out.println("The number of times the given integer(3) occurs in the list is: "+ll.count(3));
         System.out.println("The data at the nth(4) index is: "+ll.getNth(4));
         System.out.println("The popped element: "+ll.pop());
+        ll.push(34);
+        ll.push(3);
+        ll.push(1);
+        ll.push(2);
+        System.out.println("Initial list:-> ");
+        ll.printList();
+        System.out.println("List after removing duplicates:-> ");
+        ll.removeDuplicates();
+        ll.printList();
         ll.deleteList();
+        ll.printList();
+        int[] arr1 = {34,1,12,15,90};
+        for(int i = 0; i < arr1.length; i++){
+            ll.insertNth(i,arr1[i]);
+        }
+        ll.printList();
+        ll.moveNode(ll2);
+        System.out.println("Linkedlist after moveNode operation: ");
         ll.printList();
     }
 }
