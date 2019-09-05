@@ -164,13 +164,13 @@ public class LinkedListPractice{
             this.head = newNode;
             return;
         }
-        while(current.next != null){
-            //data is less than this.head.data
-            if(data < this.head.data){
-                this.push(data);
-                return;
-            }
 
+        //data is less than this.head.data
+        if(data < this.head.data){
+            this.push(data);
+            return;
+        }
+        while(current.next != null){
             //data is in between
             if(data >= current.data && data <= current.next.data){
                 Node temp = current.next;
@@ -184,6 +184,7 @@ public class LinkedListPractice{
         current.next = newNode;
     }
 
+    //7.insertSort()
     public void insertSort(){
         //initialize an empty list
         LinkedListPractice newLL = new LinkedListPractice();
@@ -197,17 +198,47 @@ public class LinkedListPractice{
         while(current.next != null){
             newLL.sortedInsert(current.data);
             current = current.next;
+            //newLL.printList();
         }
 
+        if(current.next == null){
+            newLL.sortedInsert(current.data);
+        }
         //point the original head to the new list
         this.head = newLL.head;
+    }
+
+    //8.append() -> appens the new list to the end of the current list
+    public void append(Node ll2Head){
+        if(this.head == null){
+            this.head = ll2Head;
+        }
+        Node current = this.head;
+        while(current.next != null){
+            current = current.next;
+        }
+        current.next = ll2Head;
+    }
+
+    //9.frontBackSplit() -> split a linkedlist into two lists
+    //if list's length is odd, the extra element should go to the first list
+    public void frontBackSplit(){
+        int length = this.length();
+        if(length < 2){
+            return;
+        }
+        //if length is even
+        
     }
 
 
     public static void main(String[] args){
         LinkedListPractice ll = new LinkedListPractice();
-        //ll.buildOneTwoThree();
-        int[] arr = {34,1,15,90,12};
+        LinkedListPractice ll2 = new LinkedListPractice();
+        ll2.buildOneTwoThree();
+        System.out.println("********");
+        // ll2.printList();
+        int[] arr = {34,1,12,15,90};
         for(int i = 0; i < arr.length; i++){
             ll.insertNth(i,arr[i]);
         }
@@ -217,6 +248,7 @@ public class LinkedListPractice{
         //ll.insertNth(0, 79);
         //ll.printList();
         ll.insertSort();
+        ll.append(ll2.head);
         ll.printList();
         System.out.println("The length of the linkedlist is: "+ll.length());
         System.out.println("The number of times the given integer(3) occurs in the list is: "+ll.count(3));
