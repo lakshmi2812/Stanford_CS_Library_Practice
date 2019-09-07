@@ -29,7 +29,7 @@ public class LinkedListPractice{
     //length() -> returns the length of the linkedlist
     public int length(){
         if(this.head == null){
-            return -1;
+            return 0;
         }
         int count = 0;
         Node current = this.head;
@@ -287,6 +287,179 @@ public class LinkedListPractice{
         ll2.printList();
     }
 
+    //12.alternatingSplit() -> takes a list and splits it into 2 lists based on alternating elements
+    public LinkedListPractice alternatingSplit(){
+        Node current = this.head;
+        int length = this.length();
+        LinkedListPractice ll2 = new LinkedListPractice();
+        //if linkedlist is empty
+        if(this.head == null){
+            return null;
+        }
+        //if list has only on element
+        if(length == 1){
+            return null;
+        }
+        //Node current2 = ll2.head;
+        Node current2 = null;
+        while(current.next != null){
+            System.out.println(current.data);
+            if(ll2.head == null){
+                ll2.head = current.next;
+                current2 = ll2.head;
+                if(current.next.next != null){
+                    current.next = current.next.next;
+                }else{
+                    current.next = null;
+                }
+            }else{
+                //instead of doing below step, you can create a new node with current.next's data as its next will be automatically null
+                current2.next = current.next;
+                current2 = current2.next;
+                if(current.next.next != null){
+                    current.next = current.next.next;
+                }else{
+                    current.next = null;
+                }
+            }
+            if(current.next != null){
+                current = current.next;
+            }
+            System.out.println("current2:"+current2.data);
+        }
+        current2.next = null;
+        return ll2;
+    }
+
+    //helper method pushToEnd
+    public void pushToEnd(int data){
+        Node newNode = new Node(data);
+        Node current = this.head;
+        if(this.head == null){
+            return;
+        }
+        while(current.next != null){
+            current = current.next;
+        }
+        current.next = newNode;
+    }
+
+    //13.shuffleMerge() -> merge two linkedlists, taking nodes alternatingly from each list. 
+    //If you run out of nodes in either list,take all remaining node from the other list.
+    public LinkedListPractice shuffleMerge(LinkedListPractice list2){
+        Node current1 = null;
+        Node current2 = null;
+        //list2 is empty or null        
+        if(list2 ==  null || list2.head == null){
+            return this;
+        }else{
+            current2 = list2.head;
+        }
+        if(this.head != null){
+            current1 = this.head;
+        }else{
+            //list1 is empty
+            return list2;
+        }
+        LinkedListPractice list3 = new LinkedListPractice();
+        Node current3 = null;
+        String pre = "";
+
+        //edge cases
+        //list2 is empty
+
+        while(current1 != null && current2 != null){
+            if(list3.head == null){
+                list3.head = new Node(current1.data);
+                pre = "list1";
+                current1 = current1.next;
+                current3 = list3.head;
+            }else{
+                if(pre == "list2"){
+                    current3.next = new Node(current1.data);
+                    pre = "list1";
+                    current1 = current1.next;
+                    current3 = current3.next;
+                }else{
+                    current3.next = new Node(current2.data);
+                    pre = "list2";
+                    current2 = current2.next;
+                    current3 = current3.next;
+                }
+            }
+        }
+
+        while(current1 != null){
+            current3.next = new Node(current1.data);
+            current1 = current1.next;
+            current3 = current3.next;
+        }
+
+        while(current2 != null){
+            current3.next = new Node(current2.data);
+            current2 = current2.next;
+            current3 = current3.next;
+        }
+
+        return list3;
+    }
+
+    //14.sortedMerge() -> merge two sorted lists into a new list
+    public LinkedListPractice sortedMerge(LinkedListPractice list1, LinkedListPractice list2){
+        Node current1 = null;
+        Node current2 = null;
+        //list2 is empty or null        
+        if(list2 ==  null || list2.head == null){
+            return list1;
+        }else{
+            current2 = list2.head;
+        }
+        //list1 is empty or null
+        if(list1 ==  null || list1.head == null){
+            return list2;
+        }else{
+            current1 = list1.head;
+        }
+        LinkedListPractice list3 = new LinkedListPractice();
+        Node current3 = null;
+        while(current1 != null && current2 != null){
+            if(list3.head == null){
+                if(current1.data <= current2.data){
+                    list3.head = new Node(current1.data);
+                    current1 = current1.next;
+                    current3 = list3.head;
+                }else{
+                    list3.head = new Node(current2.data);
+                    current2 = current2.next;
+                    current3 = current3.next;
+                }
+            }else{
+                if(current1.data <= current2.data){
+                    current3.next = new Node(current1.data);
+                    current1 = current1.next;
+                    current3 = current3.next;
+                }else{
+                    current3.next = new Node(current2.data);
+                    current2 = current2.next;
+                    current3 = current3.next;
+                }
+            }
+        }
+        while(current1 != null){
+            current3.next = new Node(current1.data);
+            current1 = current1.next;
+            current3 = current3.next;
+        }
+
+        while(current2 != null){
+            current3.next = new Node(current2.data);
+            current2 = current2.next;
+            current3 = current3.next;
+        }
+
+        return list3;
+    }
+
 
     public static void main(String[] args){
         LinkedListPractice ll = new LinkedListPractice();
@@ -294,7 +467,7 @@ public class LinkedListPractice{
         ll2.buildOneTwoThree();
         System.out.println("********");
         // ll2.printList();
-        int[] arr = {34,1,12,15, 90};
+        int[] arr = {34,1,12,15,90};
         for(int i = 0; i < arr.length; i++){
             ll.insertNth(i,arr[i]);
         }
@@ -328,13 +501,39 @@ public class LinkedListPractice{
         ll.printList();
         ll.deleteList();
         ll.printList();
-        int[] arr1 = {34,1,12,15,90};
+        //int[] arr1 = {34,1,12,15, 90};
+        int[] arr1 = {1,3,5};
         for(int i = 0; i < arr1.length; i++){
             ll.insertNth(i,arr1[i]);
         }
+        int[] arr2 = {2,4,5,6,8,10};
+        LinkedListPractice list2 = new LinkedListPractice();
+        for(int i = 0; i < arr2.length; i++){
+            list2.insertNth(i,arr2[i]);
+        }
+        System.out.println("List2: ->");
+        list2.printList();
         ll.printList();
         ll.moveNode(ll2);
         System.out.println("Linkedlist after moveNode operation: ");
         ll.printList();
+        System.out.println("********");
+        // LinkedListPractice llAltSplit = ll.alternatingSplit();
+        // System.out.println("Original linkedlist after splitting:-> ");
+        // //ll.pushToEnd(6758);
+        // ll.printList();
+        // System.out.println("Linkedlist alternate after splitting:-> ");
+        // llAltSplit.printList();
+        System.out.println("Linkedlist after shuffleMerge:-> ");
+        LinkedListPractice ll3 = ll.shuffleMerge(list2);
+        ll3.printList();
+        LinkedListPractice lln = new LinkedListPractice();
+        int[] arrn = {1,3,5};
+        for(int i = 0; i < arrn.length; i++){
+            lln.insertNth(i,arrn[i]);
+        }
+        LinkedListPractice list3 = ll.sortedMerge(lln, list2);
+        System.out.println(" ******Sorted Merge ********");
+        list3.printList();
     }
 }
