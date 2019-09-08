@@ -431,7 +431,7 @@ public class LinkedListPractice{
                 }else{
                     list3.head = new Node(current2.data);
                     current2 = current2.next;
-                    current3 = current3.next;
+                    current3 = list3.head;
                 }
             }else{
                 if(current1.data <= current2.data){
@@ -456,10 +456,88 @@ public class LinkedListPractice{
             current2 = current2.next;
             current3 = current3.next;
         }
-
         return list3;
     }
 
+    //15.mergeSort() -> sort the elements of a linkedlist in increasing order
+    public LinkedListPractice mergeSort(LinkedListPractice myList){
+        if(myList == null || myList.head == null){
+            return null;
+        }
+        int length = myList.length();
+        //base case
+        if(length == 1){
+            return myList;
+        }
+
+        //split and merge
+        LinkedListPractice newList = myList.frontBackSplit();
+        // System.out.println("New List: ");
+        // newList.printList();
+        // System.out.println("My List: ");
+        // myList.printList();
+        return sortedMerge(mergeSort(newList), mergeSort(myList));
+        //return null;
+    }
+
+    //16.sortedIntersect() -> given two sorted linkedlists(made of integers), form a new list containing the common elements in the 2 lists
+    public LinkedListPractice sortedInsert(LinkedListPractice list1, LinkedListPractice list2){
+        LinkedListPractice commonList = new LinkedListPractice();
+        if(list1 == null || list1.head == null || list2 == null || list2.head == null){
+            return null;
+        }
+
+        Node current1 = list1.head;
+        Node current2 = list2.head;
+        Node current3 = null;
+
+        list1.removeDuplicates();
+        list2.removeDuplicates();
+
+        while(current1 != null && current2 != null){
+            if(current1.data < current2.data){
+                //current1 is less
+                current1 = current1.next;
+            }else if(current1.data > current2.data){
+                //current2 is less
+                current2 = current2.next;
+            }else{
+                //both are equal - common element!
+                if(commonList.head == null){
+                    commonList.head = new Node(current1.data);
+                    current3 = commonList.head;
+                }else{
+                    current3.next = new Node(current1.data);
+                    current3 = current3.next;
+                }
+                current1 = current1.next;
+                current2 = current2.next;
+            }
+        }
+        return commonList;
+    }
+
+    //17.reverse() -> given a linkedlist, reverse the nodes of the list such that the tail is the new head
+    public void reverse(){
+        if(this.head == null || this == null){
+            return;
+        }
+        LinkedListPractice dummyList = new LinkedListPractice();
+        Node dummyNode = new Node(-1);
+        dummyList.head = dummyNode;
+        Node h2 = dummyList.head;
+        Node h1 = this.head;
+        Node temp = null;
+        while(h1 != null){
+            temp = h1;
+            h1 = h1.next;
+            temp.next = h2.next;
+            h2.next = temp;
+        }
+        this.head = temp;
+    }
+
+    //18. 
 
     public static void main(String[] args){
         LinkedListPractice ll = new LinkedListPractice();
@@ -506,7 +584,8 @@ public class LinkedListPractice{
         for(int i = 0; i < arr1.length; i++){
             ll.insertNth(i,arr1[i]);
         }
-        int[] arr2 = {2,4,5,6,8,10};
+        //int[] arr2 = {2,4,5,6,8,10};
+        int[] arr2 ={20};
         LinkedListPractice list2 = new LinkedListPractice();
         for(int i = 0; i < arr2.length; i++){
             list2.insertNth(i,arr2[i]);
@@ -528,12 +607,39 @@ public class LinkedListPractice{
         LinkedListPractice ll3 = ll.shuffleMerge(list2);
         ll3.printList();
         LinkedListPractice lln = new LinkedListPractice();
-        int[] arrn = {1,3,5};
+        //int[] arrn = {1,3,5};
+        int[] arrn = {90};
         for(int i = 0; i < arrn.length; i++){
             lln.insertNth(i,arrn[i]);
         }
         LinkedListPractice list3 = ll.sortedMerge(lln, list2);
         System.out.println(" ******Sorted Merge ********");
         list3.printList();
+        LinkedListPractice list = new LinkedListPractice();
+        int[] arrNew = {90,20,80,10,5};
+         for(int i = 0; i < arrNew.length; i++){
+            list.insertNth(i,arrNew[i]);
+        }
+        System.out.println("$$$$$$$$$$$");
+        list.printList();
+        LinkedListPractice sortedList = list.mergeSort(list);
+        System.out.println("List after sorting: ->");
+        sortedList.printList();
+        sortedList.reverse();
+        System.out.println("Sorted list after reversing!: ->");
+        sortedList.printList();
+        LinkedListPractice list100 = new LinkedListPractice();
+        int[] arr100 = {105,200,300,405,505};
+        for(int i = 0; i < arr100.length; i++){
+            list100.insertNth(i,arr100[i]);
+        }
+        LinkedListPractice list200 = new LinkedListPractice();
+        int[] arr200 = {55,65,95,200,400,405};
+        for(int i = 0; i < arr200.length; i++){
+            list200.insertNth(i,arr200[i]);
+        }
+        LinkedListPractice commonList = ll.sortedInsert(list100, list200);
+        System.out.println(" &&&&&& Common List &&&&&&&");
+        commonList.printList();
     }
 }
