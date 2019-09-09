@@ -518,6 +518,7 @@ public class LinkedListPractice{
     }
 
     //17.reverse() -> given a linkedlist, reverse the nodes of the list such that the tail is the new head
+    //solution using dummy node
     public void reverse(){
         if(this.head == null || this == null){
             return;
@@ -537,7 +538,45 @@ public class LinkedListPractice{
         this.head = temp;
     }
 
-    //18. 
+    //18.recursiveReverse() -> reverse a list using recursion in a single pass of the list
+    //The key is to reverse the rest of the list and then attach the head at the end of the reversed list
+    public LLHeadTail recursiveReverseHelper(Node n){
+        if(n == null){
+            return null;
+        }
+
+        if(n.next == null){
+            LLHeadTail base = new LLHeadTail(n,n);
+            return base;
+        }
+        
+        //isolate head
+        Node suffix = n.next;
+        n.next = null;
+        LLHeadTail tmp = recursiveReverseHelper(suffix);
+        tmp.tail.next = n;
+        tmp.tail = n;
+        return tmp;
+    }
+
+    public void recursiveReverse(){
+        if(this.head == null){
+            return;
+        }
+        LLHeadTail reversedListHeadTail = recursiveReverseHelper(this.head);
+        this.head = reversedListHeadTail.head;
+    }
+
+    //helper class
+    private static class LLHeadTail{
+        Node head;
+        Node tail;
+        private LLHeadTail(Node head, Node tail){
+            this.head = head;
+            this.tail = tail;
+        }
+    }
+
 
     public static void main(String[] args){
         LinkedListPractice ll = new LinkedListPractice();
@@ -627,6 +666,9 @@ public class LinkedListPractice{
         sortedList.printList();
         sortedList.reverse();
         System.out.println("Sorted list after reversing!: ->");
+        sortedList.printList();
+        System.out.println("Sorted list after re-reversing using RECURSIVE REVERSE: ->");
+        sortedList.recursiveReverse();
         sortedList.printList();
         LinkedListPractice list100 = new LinkedListPractice();
         int[] arr100 = {105,200,300,405,505};
