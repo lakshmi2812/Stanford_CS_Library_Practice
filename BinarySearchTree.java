@@ -23,13 +23,18 @@ public class BinarySearchTree{
         if(root == null){
             return;
         }
-        Node current = this.root;
+        Node current = root;
         System.out.println(current.data+"->");
         if(current.left != null){
             this.printTree(current.left);
+        }else {
+            return;
         }
+        
         if(current.right != null){
             this.printTree(current.right);
+        }else{
+            return;
         }
     }
     
