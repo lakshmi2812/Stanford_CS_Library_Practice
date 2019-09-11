@@ -76,7 +76,7 @@ public class BinarySearchTree{
         return count;
     }
 
-    maxDepth() -> return the maximum depth(#oflevels) of the BST as an integer
+    //maxDepth() -> return the maximum depth(#oflevels) of the BST as an integer
     public int maxDepth(Node root){
         if(this.root == null){
             return 0;
@@ -89,6 +89,20 @@ public class BinarySearchTree{
         return depth;
     }
 
+    //minValue() -> return the minimum value present in the BST
+    public int minValue(Node root){
+        if(root == null){
+            return 0;
+        }
+
+        Node current = root;
+        int minVal = current.data;
+        while(current.left != null){
+            current = current.left;
+        }
+        return current.data;
+    }
+
 
 
 
@@ -98,5 +112,6 @@ public class BinarySearchTree{
         bst.printTree(bst.root);
         System.out.println("Size of the current binary tree is: ->"+bst.size(bst.root));
         System.out.println("Depth of the current binary tree is: ->"+bst.maxDepth(bst.root));
+        System.out.println("The minimum value of the current binary tree is: ->"+bst.minValue(bst.root));
     }
 }
