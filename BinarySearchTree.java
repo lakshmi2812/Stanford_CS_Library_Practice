@@ -179,44 +179,12 @@ public class BinarySearchTree{
     }
 
     //hasPathSum() -> if there is a path in the BST with the given sum, return true, else return false
-    public boolean hasPathSum(int inputSum, Node root){
+    public boolean hasPathSum(Node root, int inputSum){
         if(root == null){
-            return false;
-        }
-
-        Node current = root;
-
-        // while(current.left != null || current.right != null){
-        //     if(current.left != null){
-
-        //     }
-        // }
-
-        //*******************/
-
-        int sum = current.data;
-        while(current.left != null || current.right != null){
-            System.out.println("SUM for each iteration: "+sum);
-            while(current.left != null){
-                current = current.left;
-                sum += current.data;
-            }
-            current = root;
-            sum = current.data;
-            if(sum == inputSum){
-                System.out.println("SUM before return in while: "+sum);
-                return true;
-            }
-            while(current.right != null){
-                current = current.right;
-                sum += current.data;
-            }
-        }
-        System.out.println("SUM outside while: "+sum);
-        if(sum == inputSum){
-            return true;
+            return (inputSum == 0);
         }else{
-            return false;
+            int subSum = inputSum - root.data;
+            return(hasPathSum(root.left,subSum) || hasPathSum(root.right, subSum));
         }
     }
 
@@ -239,10 +207,6 @@ public class BinarySearchTree{
     }
 
 
-
-
-
-
     public static void main(String[] args){
         BinarySearchTree bst = new BinarySearchTree(null); 
         bst.build123();
@@ -262,7 +226,7 @@ public class BinarySearchTree{
         bst.insert(11);
         System.out.println("Inorder traversal: ");
         bst.printTreeInorder(bst.root);
-        System.out.println(bst.hasPathSum(30, bst.root));
+        System.out.println("HAS PATH SUM? "+bst.hasPathSum(bst.root, 31));
         bst.mirror(bst.root);
         System.out.println("BST after mirror method: ");
         bst.printTreeInorder(bst.root);
