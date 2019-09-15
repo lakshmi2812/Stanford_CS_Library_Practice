@@ -188,6 +188,25 @@ public class BinarySearchTree{
         }
     }
 
+    //print all the paths from the root node to leaf node for the given BST
+    public void printPaths(Node root){
+        if(root == null){
+            return;
+        }
+        System.out.print(root.data+" ");
+        if(root.left != null || root.right != null){
+            if(root.left != null){
+                printPaths(root.left);
+            }
+            if(root.right != null){
+                printPaths(root.right);
+            }
+        }else{
+            System.out.println("");
+            System.out.print(root.data + " ");
+        }
+    }
+
     //mirror() -> create a mirror image of the current tree(by swapping the left and right nodes for each node)
     public void mirror(Node root){
         if(root == null){
@@ -206,17 +225,37 @@ public class BinarySearchTree{
         }
     }
 
+    public void doubleTree(Node root){
+        if(root == null){
+            return;
+        }
+        Node current = root;
+        Node newNode = new Node(current.data);
+        if(current.left != null){
+            Node temp = current.left;
+            current.left = newNode;
+            current.left.left = temp;
+            doubleTree(current.left.left);
+            //current = current.left;
+        }else{
+            current.left = newNode;
+            //current = current.left;
+        }
+       //doubleTree(current.left);
+       doubleTree(current.right);
+    }
+
 
     public static void main(String[] args){
         BinarySearchTree bst = new BinarySearchTree(null); 
         bst.build123();
-        bst.printTree(bst.root);
-        System.out.println("Size of the current binary tree is: ->"+bst.size(bst.root));
-        System.out.println("Depth of the current binary tree is: ->"+bst.maxDepth(bst.root));
-        System.out.println("The minimum value of the current binary tree is: ->"+bst.minValue(bst.root));
+        //bst.printTree(bst.root);
+        // System.out.println("Size of the current binary tree is: ->"+bst.size(bst.root));
+        // System.out.println("Depth of the current binary tree is: ->"+bst.maxDepth(bst.root));
+        // System.out.println("The minimum value of the current binary tree is: ->"+bst.minValue(bst.root));
         bst.insert(5);
-        System.out.println("Inserting node 5 into BST: ->");
-        System.out.println("Size of the current binary tree is: ->"+bst.size(bst.root));
+        // System.out.println("Inserting node 5 into BST: ->");
+        // System.out.println("Size of the current binary tree is: ->"+bst.size(bst.root));
         //bst.printTree(bst.root);
         bst.printTreeInorder(bst.root);
         System.out.println("Post order traversal of the tree: ");
@@ -226,9 +265,12 @@ public class BinarySearchTree{
         bst.insert(11);
         System.out.println("Inorder traversal: ");
         bst.printTreeInorder(bst.root);
-        System.out.println("HAS PATH SUM? "+bst.hasPathSum(bst.root, 31));
-        bst.mirror(bst.root);
-        System.out.println("BST after mirror method: ");
+        System.out.println("HAS PATH SUM? "+bst.hasPathSum(bst.root, 30));
+        // bst.mirror(bst.root);
+        // System.out.println("BST after mirror method: ");
+        //bst.printTreeInorder(bst.root);
+        //bst.printPaths(bst.root);
+        bst.doubleTree(bst.root);
         bst.printTreeInorder(bst.root);
     }
 }
