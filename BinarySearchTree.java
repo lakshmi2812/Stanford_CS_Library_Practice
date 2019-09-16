@@ -225,6 +225,7 @@ public class BinarySearchTree{
         }
     }
 
+    //doubleTree() -> create a duplicate of each node and place it to its left
     public void doubleTree(Node root){
         if(root == null){
             return;
@@ -236,41 +237,64 @@ public class BinarySearchTree{
             current.left = newNode;
             current.left.left = temp;
             doubleTree(current.left.left);
-            //current = current.left;
         }else{
             current.left = newNode;
-            //current = current.left;
         }
-       //doubleTree(current.left);
        doubleTree(current.right);
+    }
+
+    //sameTree() -> given two trees, find out if they are identical(same structure and same data in all nodes)
+    public boolean sameTree(Node root1, Node root2){
+        //base case
+        if(root1 == null && root2 == null){
+            return true;
+        }
+
+        if(root1 != null && root2 != null){
+            if(root1.data == root2.data){
+                return (sameTree(root1.left, root2.left) && sameTree(root1.right, root2.right));
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
     }
 
 
     public static void main(String[] args){
         BinarySearchTree bst = new BinarySearchTree(null); 
+        BinarySearchTree bst2 = new BinarySearchTree(null);
+        bst2.build123();
         bst.build123();
+        System.out.println("Are BST and BST2 same 1? "+bst.sameTree(bst.root, bst2.root));
         //bst.printTree(bst.root);
         // System.out.println("Size of the current binary tree is: ->"+bst.size(bst.root));
         // System.out.println("Depth of the current binary tree is: ->"+bst.maxDepth(bst.root));
         // System.out.println("The minimum value of the current binary tree is: ->"+bst.minValue(bst.root));
-        bst.insert(5);
+        bst.insert(5);bst2.insert(5);
         // System.out.println("Inserting node 5 into BST: ->");
         // System.out.println("Size of the current binary tree is: ->"+bst.size(bst.root));
         //bst.printTree(bst.root);
         bst.printTreeInorder(bst.root);
         System.out.println("Post order traversal of the tree: ");
         bst.printPostorder(bst.root);
-        bst.insert(4);
-        bst.insert(9);
-        bst.insert(11);
-        System.out.println("Inorder traversal: ");
+        bst.insert(4); bst2.insert(4);
+        bst.insert(9); bst2.insert(9);
+        bst.insert(11); bst2.insert(11);
+        System.out.println("Inorder traversal of BST**: ");
         bst.printTreeInorder(bst.root);
+        System.out.println("Inorder traversal of BST2**: ");
+        bst2.printTreeInorder(bst2.root);
+        System.out.println("Are BST and BST2 same again 2? "+bst.sameTree(bst.root, bst2.root));
         System.out.println("HAS PATH SUM? "+bst.hasPathSum(bst.root, 30));
         // bst.mirror(bst.root);
         // System.out.println("BST after mirror method: ");
         //bst.printTreeInorder(bst.root);
         //bst.printPaths(bst.root);
+        System.out.println("BST after doubling: ");
         bst.doubleTree(bst.root);
         bst.printTreeInorder(bst.root);
+        System.out.println("Are BST and BST2 same again 3? "+bst.sameTree(bst.root, bst2.root));
     }
 }
