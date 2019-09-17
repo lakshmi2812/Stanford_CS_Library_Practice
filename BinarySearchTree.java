@@ -59,6 +59,7 @@ public class BinarySearchTree{
         Node newNode = new Node(data);
         if(this.root == null){
             this.root = newNode;
+            return;
         }
 
         Node current = this.root;
@@ -148,7 +149,21 @@ public class BinarySearchTree{
         return current.data;
     }
 
-    //printTreeInorder() is called printTree() in the pdf. This method prints the node sof the BST in the increasing order
+    //helper function for isBST()
+    public int maxValue(Node root){
+        if(root == null){
+            return 0;
+        }
+
+        Node current = root;
+        int maxVal = current.data;
+        while(current.right != null){
+            current = current.right;
+        }
+        return current.data;
+    }
+
+    //5.printTreeInorder() is called printTree() in the pdf. This method prints the node sof the BST in the increasing order
     //left,node and right nodes in that order
     public void printTreeInorder(Node root){
         if(root == null){
@@ -164,7 +179,7 @@ public class BinarySearchTree{
         }
     }
 
-    //printPostorder() -> prints the values of the left and right nodes of a node before printing its own value
+    //6.printPostorder() -> prints the values of the left and right nodes of a node before printing its own value
     public void printPostorder(Node root){
         if(root == null){
             return;
@@ -179,7 +194,7 @@ public class BinarySearchTree{
         System.out.println(" "+current.data);
     }
 
-    //hasPathSum() -> if there is a path in the BST with the given sum, return true, else return false
+    //7.hasPathSum() -> if there is a path in the BST with the given sum, return true, else return false
     public boolean hasPathSum(Node root, int inputSum){
         if(root == null){
             return (inputSum == 0);
@@ -188,25 +203,6 @@ public class BinarySearchTree{
             return(hasPathSum(root.left,subSum) || hasPathSum(root.right, subSum));
         }
     }
-
-    //print all the paths from the root node to leaf node for the given BST
-    // public void printPaths(Node root){
-    //     if(root == null){
-    //         return;
-    //     }
-    //     System.out.print(root.data+" ");
-    //     if(root.left != null || root.right != null){
-    //         if(root.left != null){
-    //             printPaths(root.left);
-    //         }
-    //         if(root.right != null){
-    //             printPaths(root.right);
-    //         }
-    //     }else{
-    //         System.out.println("");
-    //         System.out.print(root.data + " ");
-    //     }
-    // }
 
     //helper function to display data in the arraylist(helper for printPaths)
     public void display(ArrayList al){
@@ -251,16 +247,14 @@ public class BinarySearchTree{
         }
     }
 
+    //8.print all the paths from the root node to leaf node for the given BST
     public void printPaths(Node root){
         ArrayList<Integer> al = new ArrayList<Integer>();
         //call recursive helper function printPathsRecur
         printPathsRecur(root, al);
-    }
+    }   
 
-
-    
-
-    //mirror() -> create a mirror image of the current tree(by swapping the left and right nodes for each node)
+    //9.mirror() -> create a mirror image of the current tree(by swapping the left and right nodes for each node)
     public void mirror(Node root){
         if(root == null){
             return;
@@ -278,7 +272,7 @@ public class BinarySearchTree{
         }
     }
 
-    //doubleTree() -> create a duplicate of each node and place it to its left
+    //10.doubleTree() -> create a duplicate of each node and place it to its left
     public void doubleTree(Node root){
         if(root == null){
             return;
@@ -296,7 +290,7 @@ public class BinarySearchTree{
        doubleTree(current.right);
     }
 
-    //sameTree() -> given two trees, find out if they are identical(same structure and same data in all nodes)
+    //11.sameTree() -> given two trees, find out if they are identical(same structure and same data in all nodes)
     public boolean sameTree(Node root1, Node root2){
         //base case
         if(root1 == null && root2 == null){
@@ -312,6 +306,30 @@ public class BinarySearchTree{
         }else{
             return false;
         }
+    }
+
+    //13.isBST() -> given a binary tree, return true if it is a Binary Search Tree and false otherwise
+    //A Binary Tree is said to be a Binary Search Tree if all the nodes to the left of the root are less than
+    //the root and all the nodes to the right of the tree are greater than the root
+
+    public boolean isBST(Node root){
+        if(root == null){
+            return true;
+        }
+
+        if(root.left != null && maxValue(root.left) > root.data){
+            return false;
+        }
+
+        if(root.right != null && minValue(root.right) <= root.data){
+            return false;
+        }
+
+        if(!isBST(root.left) || !isBST(root.right)){
+            return false;
+        }
+
+        return true;
     }
 
 
@@ -349,5 +367,18 @@ public class BinarySearchTree{
         bst.doubleTree(bst.root);
         bst.printTreeInorder(bst.root);
         System.out.println("Are BST and BST2 same again 3? "+bst.sameTree(bst.root, bst2.root));
+
+        //Testing for isBST()
+        BinarySearchTree bt1 = new BinarySearchTree(null);
+        int[] arr1 = {5,2,7,8,3};
+        bt1.root = new Node(5);
+        bt1.root.left = new Node(2);
+        bt1.root.right = new Node(7);
+        bt1.root.left.left = new Node(8);
+        bt1.root.left.right = new Node(3);
+        System.out.println("BT1 inorder:");
+        bt1.printTreeInorder(bt1.root);
+        System.out.println("IS BT1 A BST??: "+bt1.isBST(bt1.root));
+        System.out.println("IS bst A BST??: "+bt1.isBST(bst.root));
     }
 }
