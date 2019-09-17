@@ -1,4 +1,5 @@
 import java.lang.*;
+import java.util.ArrayList;
 
 public class BinarySearchTree{
     Node root;
@@ -189,23 +190,75 @@ public class BinarySearchTree{
     }
 
     //print all the paths from the root node to leaf node for the given BST
-    public void printPaths(Node root){
+    // public void printPaths(Node root){
+    //     if(root == null){
+    //         return;
+    //     }
+    //     System.out.print(root.data+" ");
+    //     if(root.left != null || root.right != null){
+    //         if(root.left != null){
+    //             printPaths(root.left);
+    //         }
+    //         if(root.right != null){
+    //             printPaths(root.right);
+    //         }
+    //     }else{
+    //         System.out.println("");
+    //         System.out.print(root.data + " ");
+    //     }
+    // }
+
+    //helper function to display data in the arraylist(helper for printPaths)
+    public void display(ArrayList al){
+        for(int i = 0; i < al.size(); i++){
+            System.out.println(al.get(i) + " ");
+        }
+    }
+
+    //recursive helper function for printPaths
+    public void printPathsRecur(Node root, ArrayList path){
         if(root == null){
             return;
         }
-        System.out.print(root.data+" ");
-        if(root.left != null || root.right != null){
-            if(root.left != null){
-                printPaths(root.left);
-            }
-            if(root.right != null){
-                printPaths(root.right);
-            }
+
+        //add the root to the arraylist
+        path.add(root.data);
+        if(root.left != null){
+            printPathsRecur(root.left, path);
         }else{
+            //root.left is null
+            if(root.right == null){
+                //root.right is also null
+                //its a leaf node. so, print the path
+                this.display(path);
+                System.out.println("");
+                path.remove(path.size()-1);
+                return;
+            }
+        }
+
+        if(root.right != null){
+            printPathsRecur(root.right, path);
+        }else{
+            //root.right is null
+            if(root.left == null)
+            //if root.left is also null
+            //its a leaf node. so, print the path
+            this.display(path);
             System.out.println("");
-            System.out.print(root.data + " ");
+            path.remove(path.size()-1);
+            return;
         }
     }
+
+    public void printPaths(Node root){
+        ArrayList<Integer> al = new ArrayList<Integer>();
+        //call recursive helper function printPathsRecur
+        printPathsRecur(root, al);
+    }
+
+
+    
 
     //mirror() -> create a mirror image of the current tree(by swapping the left and right nodes for each node)
     public void mirror(Node root){
@@ -291,7 +344,7 @@ public class BinarySearchTree{
         // bst.mirror(bst.root);
         // System.out.println("BST after mirror method: ");
         //bst.printTreeInorder(bst.root);
-        //bst.printPaths(bst.root);
+        bst.printPaths(bst.root);
         System.out.println("BST after doubling: ");
         bst.doubleTree(bst.root);
         bst.printTreeInorder(bst.root);
