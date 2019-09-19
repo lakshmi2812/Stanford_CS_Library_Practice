@@ -1,5 +1,9 @@
 import java.lang.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Iterator;
+import java.util.Set;
 
 public class BinarySearchTree{
     Node root;
@@ -311,6 +315,7 @@ public class BinarySearchTree{
     //12.countTrees() -> given a positive integer numKeys, count the number of structurally unique BSTs 
     //that can be formed with the keys 1...numKeys
     public int countTrees(int numKeys){
+        //base case
         if(numKeys <= 1){
             return 1;
         }
@@ -322,6 +327,38 @@ public class BinarySearchTree{
             right = countTrees(numKeys - leftNum - 1);
             sum += left * right;
         }
+        return sum;
+    }
+
+    //Dynamic Programming solution for countTrees()
+    public int countTreesDynamic(int numKeys){
+        HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>();
+        //base case
+        if(numKeys <= 1){
+            return 1;
+        }
+
+        int sum = 0; int left; int right;
+
+        for(int i = 1; i <= numKeys; i++){
+            int leftNum = i - 1;
+            if(hm.containsKey(leftNum)){
+                left = hm.get(leftNum);
+            }else{
+                left = countTrees(leftNum);
+                hm.put(leftNum, left);
+            }
+
+            int rightNum = numKeys - leftNum - 1;
+            if(hm.containsKey(rightNum)){
+                right = hm.get(rightNum);
+            }else{
+                right = countTrees(rightNum);
+                hm.put(rightNum, right);
+            }
+            sum += left * right;
+        }
+
         return sum;
     }
 
@@ -401,5 +438,6 @@ public class BinarySearchTree{
 
         //Testing for countTrees
         System.out.println("Count Trees for n=5: "+bst.countTrees(5));
+        System.out.println("Count Trees Dynamic for n=5: "+bst.countTreesDynamic(5));
     }
 }
