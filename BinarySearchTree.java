@@ -308,6 +308,24 @@ public class BinarySearchTree{
         }
     }
 
+    //12.countTrees() -> given a positive integer numKeys, count the number of structurally unique BSTs 
+    //that can be formed with the keys 1...numKeys
+    public int countTrees(int numKeys){
+        if(numKeys <= 1){
+            return 1;
+        }
+        int sum = 0; int left; int right;
+        //'i' represents the current root of the BST
+        for(int i = 1; i <= numKeys; i++){
+            int leftNum = i - 1;
+            left = countTrees(leftNum);
+            right = countTrees(numKeys - leftNum - 1);
+            sum += left * right;
+        }
+        return sum;
+    }
+
+
     //13.isBST() -> given a binary tree, return true if it is a Binary Search Tree and false otherwise
     //A Binary Tree is said to be a Binary Search Tree if all the nodes to the left of the root are less than
     //the root and all the nodes to the right of the tree are greater than the root
@@ -380,5 +398,8 @@ public class BinarySearchTree{
         bt1.printTreeInorder(bt1.root);
         System.out.println("IS BT1 A BST??: "+bt1.isBST(bt1.root));
         System.out.println("IS bst A BST??: "+bt1.isBST(bst.root));
+
+        //Testing for countTrees
+        System.out.println("Count Trees for n=5: "+bst.countTrees(5));
     }
 }
