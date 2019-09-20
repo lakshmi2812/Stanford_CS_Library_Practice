@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class BinarySearchTree{
-    Node root;
+    public Node root;
 
     private static class Node{
         int data;
@@ -387,6 +387,26 @@ public class BinarySearchTree{
         return true;
     }
 
+    //method overloading -> parameters will be different
+    private boolean isBST2(Node node, int min, int max){
+        if(node == null){
+            return true;
+        }
+
+        boolean leftOk = isBST2(node.left, min, node.data);
+
+        if(leftOk == false){
+            return false;
+        }
+
+        boolean rightOk = isBST2(node.right, node.data+1, max);
+        return rightOk;
+    }
+
+    public boolean isBST2(){
+        return isBST2(this.root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
 
     public static void main(String[] args){
         BinarySearchTree bst = new BinarySearchTree(null); 
@@ -423,7 +443,7 @@ public class BinarySearchTree{
         bst.printTreeInorder(bst.root);
         System.out.println("Are BST and BST2 same again 3? "+bst.sameTree(bst.root, bst2.root));
 
-        //Testing for isBST()
+        //Testing for isBST() and isBST2
         BinarySearchTree bt1 = new BinarySearchTree(null);
         int[] arr1 = {5,2,7,8,3};
         bt1.root = new Node(5);
@@ -435,9 +455,12 @@ public class BinarySearchTree{
         bt1.printTreeInorder(bt1.root);
         System.out.println("IS BT1 A BST??: "+bt1.isBST(bt1.root));
         System.out.println("IS bst A BST??: "+bt1.isBST(bst.root));
+        System.out.println("Is BT1 a BST using isBST2 ??: "+bt1.isBST2());
+        System.out.println("Is bst a BST using isBST2 ??: "+ bst.isBST2());
 
         //Testing for countTrees
         System.out.println("Count Trees for n=5: "+bst.countTrees(5));
         System.out.println("Count Trees Dynamic for n=5: "+bst.countTreesDynamic(5));
+
     }
 }
