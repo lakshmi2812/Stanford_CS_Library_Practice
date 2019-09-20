@@ -392,19 +392,23 @@ public class BinarySearchTree{
         if(node == null){
             return true;
         }
+        else{
+            if(node.data < min || node.data > max){
+                return false;
+            }
+            boolean leftOk = isBST2(node.left, min, node.data);
 
-        boolean leftOk = isBST2(node.left, min, node.data);
+            if(leftOk == false){
+                return false;
+            }
 
-        if(leftOk == false){
-            return false;
+            boolean rightOk = isBST2(node.right, node.data+1, max);
+            return rightOk;
         }
-
-        boolean rightOk = isBST2(node.right, node.data+1, max);
-        return rightOk;
     }
 
-    public boolean isBST2(){
-        return isBST2(this.root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    public boolean isBST2(Node root){
+        return isBST2(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
 
 
@@ -455,8 +459,8 @@ public class BinarySearchTree{
         bt1.printTreeInorder(bt1.root);
         System.out.println("IS BT1 A BST??: "+bt1.isBST(bt1.root));
         System.out.println("IS bst A BST??: "+bt1.isBST(bst.root));
-        System.out.println("Is BT1 a BST using isBST2 ??: "+bt1.isBST2());
-        System.out.println("Is bst a BST using isBST2 ??: "+ bst.isBST2());
+        System.out.println("Is BT1 a BST using isBST2 ??: "+bt1.isBST2(bt1.root));
+        System.out.println("Is bst a BST using isBST2 ??: "+ bst.isBST2(bst.root));
 
         //Testing for countTrees
         System.out.println("Count Trees for n=5: "+bst.countTrees(5));
